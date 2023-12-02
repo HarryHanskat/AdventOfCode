@@ -21,4 +21,3 @@ for line in input:
     total += int(text[0] + text[-1])
 
 print(total)
-
