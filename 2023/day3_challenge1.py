@@ -17,15 +17,46 @@ with open("/Users/harryhanskat/Workspace/AdventOfCode/2023/day3_input.txt") as f
 # Each line is the same length
 
 # Start by iterating through each line
-for line in input:
-    nextNumPattern = re.findall('[0-999]+', line)
-    for num in nextNumPattern:
-        for match in re.finditer(num, line):
-            print(line.index())
+total = 0
 
-
-        # need start and end index +-1 for each number
-
-
-
+for index, line in enumerate(input):
     
+    # Line setup
+    if index != 0 and index != len(input)-1:
+        top = input[index-1]
+        middle = line
+        bottom = input[index+1]
+    if index == 0:
+        top = ''
+        middle = line
+        bottom = input[index+1]
+    if index == len(input)-1:
+        top = input[index-1]
+        middle = line
+        bottom = ''
+    
+    
+    allNumsPattern = re.findall('[0-999]+', line)
+    for num in allNumsPattern:
+        for numMatch in re.finditer(num, line):
+            # need start and end index +-1 for each number
+            exit = False
+            for symbol in re.finditer('[^0-9.\n]', line[numMatch.start()-1:numMatch.end()+1]):
+                total += int(num)
+                exit=True
+                break
+            if exit:
+                break
+            for symbol in re.finditer('[^0-9.\n]', top[numMatch.start()-1:numMatch.end()+1]):
+                total += int(num)
+                exit=True
+                break
+            if exit:
+                break
+            for symbol in re.finditer('[^0-9.\n]', bottom[numMatch.start()-1:numMatch.end()+1]):
+                total += int(num)
+                break
+            
+    print(index,'\n' ,line, '\n', 'total = ', total)
+
+print('Final total = ', total)
