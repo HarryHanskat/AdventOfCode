@@ -21,6 +21,8 @@ total = 0
 
 for index, line in enumerate(input):
     
+    line=line.rstrip('\n')
+
     # Line setup
     if index != 0 and index != len(input)-1:
         top = input[index-1]
@@ -39,21 +41,34 @@ for index, line in enumerate(input):
     allNumsPattern = re.findall('[0-999]+', line)
     for num in allNumsPattern:
         for numMatch in re.finditer(num, line):
+            
+            if numMatch.start() == 0:
+                start = 0
+            else:
+                start = numMatch.start()-1
+
+            if numMatch.end() == len(line):
+                end = len(line)
+            else:
+                end = numMatch.end()+1
+
             # need start and end index +-1 for each number
+
             exit = False
-            for symbol in re.finditer('[^0-9.\n]', line[numMatch.start()-1:numMatch.end()+1]):
+            for symbol in re.finditer('[^0-9.\n]', middle[start:end]):
+                
                 total += int(num)
                 exit=True
                 break
             if exit:
                 break
-            for symbol in re.finditer('[^0-9.\n]', top[numMatch.start()-1:numMatch.end()+1]):
+            for symbol in re.finditer('[^0-9.\n]', top[start:end]):
                 total += int(num)
                 exit=True
                 break
             if exit:
                 break
-            for symbol in re.finditer('[^0-9.\n]', bottom[numMatch.start()-1:numMatch.end()+1]):
+            for symbol in re.finditer('[^0-9.\n]', bottom[start:end]):
                 total += int(num)
                 break
             
