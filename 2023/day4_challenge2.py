@@ -21,22 +21,27 @@ with open("/Users/harryhanskat/Workspace/AdventOfCode/2023/day4_input.txt") as f
     data = f.read().splitlines()
 
 total = 0
+repeat=[]
+for x in data: repeat.append(1)
 
 for i, card in enumerate(data):
     n = card.split('|')
     yourNums = re.findall('\d+',n[0])[1:]
+    print('yourNums = ', yourNums)
     winningNums = re.findall('\d+', n[1])
-
-    matches = 0
-    for y in yourNums:
-        if y in winningNums:
-            matches += 1
-
-    if matches == 1:
+    
+    while repeat[0] >= 1:
         total += 1
-    elif matches == 0:
-        pass
-    else:
-        total += pow(2, matches-1)
+        index = 1
+        for y in yourNums:
+            if y in winningNums:
+                if 0 <= index < len(repeat):
+                    repeat[index] += 1
+                else:
+                    repeat.append(1)
+                index += 1
+
+        repeat[0] -= 1
+    repeat.pop(0)
 
 print(total)
