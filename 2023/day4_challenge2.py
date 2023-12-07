@@ -27,7 +27,6 @@ for x in data: repeat.append(1)
 for i, card in enumerate(data):
     n = card.split('|')
     yourNums = re.findall('\d+',n[0])[1:]
-    print('yourNums = ', yourNums)
     winningNums = re.findall('\d+', n[1])
     
     while repeat[0] >= 1:
@@ -44,4 +43,5 @@ for i, card in enumerate(data):
         repeat[0] -= 1
     repeat.pop(0)
 
+    print("Card ", i, " has ", index-1, " winning numbers")
 print(total)
