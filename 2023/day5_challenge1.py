@@ -46,7 +46,34 @@ Goal: Find the lowest 'location' number (final map) out of the list of seeds pro
 
 import re
 
-with open("/Users/harryhanskat/Workspace/AdventOfCode/2023/day5_sample_input.txt") as f:
+with open("/Users/harryhanskat/Workspace/AdventOfCode/2023/day5_input.txt") as f:
     data = f.read().splitlines()
 
 # Break out into variables for each map
+seeds = data[0].split(' ')[1:]
+print('seeds = ', seeds)
+
+maps = list(filter(None, data))[1:]
+
+seedsUpdated = seeds.copy()
+
+for line in maps:
+    if re.findall('[A-z]', line):
+        seeds = seedsUpdated.copy()
+        print(line, '\n')
+        continue
+
+    print(line)
+    d, s, l = int(line.split()[0]), int(line.split()[1]), int(line.split()[2])
+    for index,seed in enumerate(seeds):
+        if index == 1:
+            pass
+        tempSeed = int(seed)
+        if tempSeed in range(int(s), int(s)+int(l)):
+            i = tempSeed-s
+            temp = d+i
+            seedsUpdated[index] = temp
+
+seeds = seedsUpdated.copy()
+        
+print(seeds, '\n', 'min = ', min(seeds))
