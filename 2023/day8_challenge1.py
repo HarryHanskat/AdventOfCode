@@ -29,14 +29,18 @@ ZZZ = (ZZZ, ZZZ)
     - repeat until ZZZ is found
 """
 
-import re
-
+from more_itertools import locate
+import numpy as np
+from itertools import cycle
+import math
+  
+###### Data Setup ######
 with open('2023/day8_input.txt', 'r') as f:
     data = f.read().splitlines()
 
-outFile = open('2023/attempt_out.txt', 'w')
-
 steps = data[0]
+steps2 = [0 if s == 'L' else 1 for s in steps]
+
 data.pop(0)
 data.pop(0)
 
@@ -49,32 +53,58 @@ for line in data:
     out[1] = out[1].strip('(,)')
     directions.append(out)
 
-handsPlayed = dict(zip(keys, directions))
 
-initKey = keys[0]
-pattern = 'AAA'
-totalSteps = 0
-while pattern != 'ZZZ':
-    for i, step in enumerate(steps):
-    
-        direction = directions[keys.index(pattern)]
-        
-        if step == 'L':
-            pattern = direction[0]
-        else:
-            pattern = direction[1]
-        totalSteps += 1
+def challenge1():
+    pattern = 'AAA'
+    totalSteps = 0
+    while pattern != 'ZZZ':
+        cycles = []
+        for i, step in enumerate(steps):
 
-        outFile.write('step = '+str(totalSteps)+'node = '+(pattern)+'\n')
+            direction = directions[keys.index(pattern)]
+            
+            if step == 'L':
+                pattern = direction[0]
+            else:
+                pattern = direction[1]
+            totalSteps += 1
+
+            if pattern == 'ZZZ':
+                break
+
+        if int(totalSteps) > 21000:
+            break
         if pattern == 'ZZZ':
-            print('End Found! It took :', totalSteps, 'steps')
             break
 
-    if int(totalSteps) > 21000:
-        break
-    if pattern == 'ZZZ':
-        print('End Found! It took :', totalSteps, 'steps')
-        break
-    
+    return totalSteps
+
+
+def challenge2():
+
+    totalSteps = 0
+
+    indices = [i for i, x in enumerate(keys) if x[2] == "A"]    
+    startingNodes = [keys[i] for i in indices]
+
+    cycles = []
+    for node in startingNodes:
+        pattern = node 
+        for i, step in enumerate(cycle(steps2), start = 1):
+            
+            d = keys.index(pattern)
+            pattern = directions[keys.index(pattern)][step]
+                
+            totalSteps += 1
+
+            if pattern[2] == 'Z':
+                cycles.append(i)
+                break
+
+    return math.lcm(*cycles)
+
+
+print("Challenge 1: ", challenge1())
+print("Challenge 2: ", challenge2())
 
         
