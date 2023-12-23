@@ -30,7 +30,7 @@ import math
 #current location = [[Line#][index of current pipe]]
 #dir_moving_in = 'n' 'e' 's' or 'w' 
     #if 7 was the last pipe, and we got there by going 'n' then dir_moving_in would be 'w'
-def find_next_pipe(current_location, dir_moving_in, length):
+def find_next_pipe(current_location, dir_moving_in, length, challenge2):
     pipe_broken = False
     temp_location = [0, 0]
     pipe = 'S'
@@ -61,6 +61,10 @@ def find_next_pipe(current_location, dir_moving_in, length):
                 else:
                     pipe_broken = True
                     return length
+                
+                if(challenge2):
+                    line = data[current_location[0]]
+                    data[current_location[0]] = line[:current_location[1]] + 'P' + line[current_location[1] + 1:]
 
             case 's':
                 # Get line above starting, and the same index
@@ -86,6 +90,9 @@ def find_next_pipe(current_location, dir_moving_in, length):
                     pipe_broken = True
                     return length
 
+                if(challenge2):
+                    line = data[current_location[0]]
+                    data[current_location[0]] = line[:current_location[1]] + 'P' + line[current_location[1] + 1:]
             
             case 'e':
                 # Get line above starting, and the same index
@@ -113,6 +120,10 @@ def find_next_pipe(current_location, dir_moving_in, length):
                     pipe_broken = True
                     return length
 
+                if(challenge2):
+                    line = data[current_location[0]]
+                    data[current_location[0]] = line[:current_location[1]] + 'P' + line[current_location[1] + 1:]
+
             case 'w':
                 # Get line above starting, and the same index
                 pipe = data[current_location[0]][current_location[1]-1]
@@ -136,6 +147,10 @@ def find_next_pipe(current_location, dir_moving_in, length):
                 else:
                     pipe_broken = True
                     return length
+
+                if(challenge2):
+                    line = data[current_location[0]]
+                    data[current_location[0]] = line[:current_location[1]] + 'P' + line[current_location[1] + 1:]
         
         current_location[0] = temp_location[0]
         current_location[1] = temp_location[1]
@@ -155,9 +170,6 @@ def find_next_pipe(current_location, dir_moving_in, length):
 with open('2023/day10_input.txt', 'r') as f:
     data = f.read().splitlines()
 
-#outPutFile = open('2023/day10_input_sample,txt', 'w')
-
-
 # find "S"
 OG_start_location = []
 for index, line in enumerate(data):
@@ -170,15 +182,28 @@ start_location = OG_start_location.copy()
 # Loop until there is no further valid connection
 # Take one route from 'S' at a time 
 
+"""
+Challenge 1
+"""
 possible_directions = ['n', 's', 'e', 'w']
 length_of_pipe = []
-for direction in possible_directions:
-    length = 0
-    length_of_pipe.append(find_next_pipe(start_location, direction, length))
-    print(length_of_pipe)
+# for direction in possible_directions:
+#     length = 0
+#     length_of_pipe.append(find_next_pipe(start_location, direction, length, False))
+#     print(length_of_pipe)
 
 # for line in data:
 #     outPutFile.write(line)
 
+"""
+Challenge 2
+"""
+for direction in possible_directions:
+    length = 0
+    length_of_pipe.append(find_next_pipe(start_location, direction, length, True))
 
+    print(length_of_pipe)
 
+with open('2023/day10_input_out.txt', 'w') as f:
+    for line in data:
+        f.write(line+'\n')
