@@ -152,11 +152,11 @@ def countPairsTwo(data, blanks):
 
 
 
-# newData = expandTheDataPartOne(data)
-# partOneTotal = countPairs(newData)
+newData = expandTheDataPartOne(data)
+partOneTotal = countPairs(newData)
 
 blanks = expandTheDataTwo(data)
 partTwoTotal = countPairsTwo(data, blanks)
 
-# print("Part 1: ", partOneTotal)
+print("Part 1: ", partOneTotal)
 print("part 2: ", partTwoTotal)
