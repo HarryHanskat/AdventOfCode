@@ -24,6 +24,7 @@
 
 import * as fs from 'fs';
 const input = fs.readFileSync('input.txt', 'utf8');
+// const input = fs.readFileSync('example.txt', 'utf8');
 
 let index = 0;
 let firstNumbers: number[] = [];
@@ -49,3 +50,33 @@ for (let index = 0; index < firstNumbers.length; index++) {
 }
 
 console.log("total difference = ", totalDifference);
+
+/*
+Part 2
+
+1. Get number of occurrences for each value in secondNumbers array
+2. Iterate through firstNumbers array
+3. Compare number in firstNumbers array with secondNumbers
+*/
+
+function countOccurrences(arr: number[]): Map<number, number> {
+    const counts = new Map<number, number>();
+    for (const num of arr) {
+        counts.set(num, (counts.get(num) || 0) + 1);
+    }
+    return counts;
+}
+
+let occurrences = countOccurrences(secondNumbers);
+let similarityScore = 0;
+
+firstNumbers.forEach(function (n) {
+    if(occurrences.has(n)){
+        similarityScore += (n * occurrences.get(n)!);
+        console.log("similarityScore = ", similarityScore);
+    }else{
+        similarityScore += 0;
+    }
+})
+
+console.log("total SS = ", similarityScore);
