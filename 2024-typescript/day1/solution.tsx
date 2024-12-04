@@ -11,15 +11,15 @@
         3   9
         3   3
 
-    
-    Steps: 
+
+    Steps:
        xxx Read in the file (pain in my ass)
         1. Split values into two lists
         2. Sort each list
         3. Calculate difference between values in both list
             - Store diff values in new list
         4. Add up the distances
-    
+
 */
 
 import * as fs from 'fs';
@@ -73,7 +73,6 @@ let similarityScore = 0;
 firstNumbers.forEach(function (n) {
     if(occurrences.has(n)){
         similarityScore += (n * occurrences.get(n)!);
-        console.log("similarityScore = ", similarityScore);
     }else{
         similarityScore += 0;
     }
