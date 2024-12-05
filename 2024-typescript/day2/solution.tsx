@@ -49,7 +49,7 @@ function isReportSafe(report: number[], tolerance: number): boolean {
         }
         tolerance -= 1;
         report.splice(0, 0);
-    } else if (report[0] > report[1] && report[0] < report[-1]) {
+    } else if (report[0] < report[1]) {
         ascending = true;
     } else {
         descending = true;
@@ -57,7 +57,7 @@ function isReportSafe(report: number[], tolerance: number): boolean {
 
     let elements = report.slice();
 
-    for (let index = 0; index < elements.length-1; index++) {
+    for (let index = 1; index < elements.length; index++) {
         const element1 = elements[index];
         const element2 = elements[index + 1];
 
@@ -114,15 +114,6 @@ function numberOfSafeReports(parsedData: number[][], tolerance: number): number 
     
     return total;
 }
-
-
-const isSafe = (arr: number[]): boolean =>
-    arr.every((_, i) => i === 0 || Math.abs(arr[i] - arr[i - 1]) <= 3) &&
-        (arr.every((_, i) => i === 0 || arr[i] > arr[i - 1]) ||
-            arr.every((_, i) => i === 0 || arr[i] < arr[i - 1]));
-
-
-
 
 function part1(numbersList: number[][]) {
     try {
