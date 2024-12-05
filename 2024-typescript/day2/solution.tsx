@@ -49,7 +49,7 @@ function isReportSafe(report: number[], tolerance: number): boolean {
         }
         tolerance -= 1;
         report.splice(0, 0);
-    } else if (report[0] < report[1]) {
+    } else if (report[0] > report[1] && report[0] < report[-1]) {
         ascending = true;
     } else {
         descending = true;
@@ -115,6 +115,15 @@ function numberOfSafeReports(parsedData: number[][], tolerance: number): number 
     return total;
 }
 
+
+const isSafe = (arr: number[]): boolean =>
+    arr.every((_, i) => i === 0 || Math.abs(arr[i] - arr[i - 1]) <= 3) &&
+        (arr.every((_, i) => i === 0 || arr[i] > arr[i - 1]) ||
+            arr.every((_, i) => i === 0 || arr[i] < arr[i - 1]));
+
+
+
+
 function part1(numbersList: number[][]) {
     try {
         console.log('Part 1: Total number of safe reports - ', numberOfSafeReports(numbersList, 0));
@@ -133,7 +142,7 @@ function part2(numbersList: number[][]) {
 
 async function main() {
     const filePath = 'input.txt' 
-    //const filePath = 'example.txt'
+    ///const filePath = 'example.txt'
     
     const fileContent = await readFileContents(filePath);
     const numbersList: number[][] = parseData(fileContent);
